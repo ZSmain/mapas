@@ -10,4 +10,11 @@ declare global {
 	}
 }
 
-export {};
+// WGSL shader imports via Vite's ?raw suffix
+declare module '*.wgsl?raw' {
+	const content: string;
+	export default content;
+}
+
+export { };
+
