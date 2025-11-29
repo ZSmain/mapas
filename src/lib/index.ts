@@ -1,6 +1,7 @@
 // Reexport your entry components here
 
 // Components
+export { default as GridCanvas } from './components/GridCanvas.svelte';
 export { default as InteractiveCanvas } from './components/InteractiveCanvas.svelte';
 export { default as WebGPUCanvas } from './components/WebGPUCanvas.svelte';
 
@@ -34,4 +35,22 @@ export {
     createPointerState, fitToBounds, handlePinchZoom, handlePointerDown, handlePointerMove, handlePointerUp, handleWheel, resetCamera
 } from './gpu/controls.js';
 export type { PointerState } from './gpu/controls.js';
+
+// GPU utilities - Grid Pipeline (Step 3)
+export {
+    createGridBindGroup, createGridPipeline, createGridVertexBuffer, renderGridFrame, renderGridWithOverlay
+} from './gpu/gridPipeline.js';
+export type { GridPipelineResult } from './gpu/gridPipeline.js';
+
+// Geo utilities - Projection (Step 3)
+export {
+    cameraToLngLat, cameraToWorld, EARTH_CIRCUMFERENCE, getLatitudeScale, getMetersPerPixel, getTileBounds, getTileBoundsLngLat, getZoomForMetersPerPixel, lngLatToCamera, lngLatToTile, lngLatToWorld, MAX_LATITUDE, tileToWorld, worldToCamera, worldToLngLat
+} from './geo/projection.js';
+export type { LngLat, TileCoord, WorldCoord } from './geo/projection.js';
+
+// Geo utilities - Tiles (Step 3)
+export {
+    createTileGridVertices, getChildTiles, getParentTile, getTileAtPoint, getTileCenters, getTilesInBounds, getTileZoom, getVisibleTiles, getVisibleWorldBounds, isValidTile, parseTileKey, tileKey
+} from './geo/tiles.js';
+export type { CameraBounds, WorldBounds } from './geo/tiles.js';
 

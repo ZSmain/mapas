@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { InteractiveCanvas, WebGPUCanvas } from '$lib/index.js';
+	import { GridCanvas, InteractiveCanvas, WebGPUCanvas } from '$lib/index.js';
 
-	let activeStep = $state<1 | 2>(2);
+	let activeStep = $state<1 | 2 | 3>(3);
 </script>
 
 <main>
@@ -13,6 +13,9 @@
 		</button>
 		<button class:active={activeStep === 2} onclick={() => (activeStep = 2)}>
 			Step 2: Interactive Square
+		</button>
+		<button class:active={activeStep === 3} onclick={() => (activeStep = 3)}>
+			Step 3: The Grid
 		</button>
 	</nav>
 
@@ -34,7 +37,7 @@
 				<li><strong>Draw Call:</strong> Triangle rendered with interpolated vertex colors</li>
 			</ul>
 		</section>
-	{:else}
+	{:else if activeStep === 2}
 		<p>Step 2: Interactive Square — Buffers, Uniforms, and Camera Controls</p>
 
 		<div class="canvas-container">
@@ -61,6 +64,42 @@
 				<li><strong>Pan:</strong> Click and drag to move the view</li>
 				<li><strong>Zoom:</strong> Scroll wheel to zoom in/out (toward mouse position)</li>
 				<li><strong>Reset:</strong> Click "Reset View" to return to default</li>
+			</ul>
+		</section>
+	{:else}
+		<p>Step 3: The Grid — Mercator Projection and Tile Coordinates</p>
+
+		<div class="canvas-container">
+			<GridCanvas width={600} height={400} />
+		</div>
+
+		<section class="info">
+			<h2>What's happening?</h2>
+			<ul>
+				<li>
+					<strong>Mercator Projection:</strong> Converting Lng/Lat to world coordinates (0-1 range)
+				</li>
+				<li>
+					<strong>Tile Calculation:</strong> Computing visible tiles based on zoom level and viewport
+				</li>
+				<li>
+					<strong>Dynamic Grid:</strong> Line primitives generated each frame for visible tile boundaries
+				</li>
+				<li>
+					<strong>Zoom-Dependent Detail:</strong> Tile zoom level increases as you zoom in
+				</li>
+			</ul>
+			<h2>Controls</h2>
+			<ul>
+				<li><strong>Pan:</strong> Click and drag to explore the world</li>
+				<li><strong>Zoom:</strong> Scroll wheel — watch tile count change!</li>
+				<li><strong>Presets:</strong> Click city icons to jump to locations</li>
+			</ul>
+			<h2>Tile Math</h2>
+			<ul>
+				<li><strong>Zoom 0:</strong> 1 tile covers the entire world</li>
+				<li><strong>Zoom N:</strong> 2<sup>N</sup> × 2<sup>N</sup> tiles (4<sup>N</sup> total)</li>
+				<li><strong>Tile URL:</strong> <code>{'{z}/{x}/{y}'}.pbf</code> (standard XYZ scheme)</li>
 			</ul>
 		</section>
 	{/if}
