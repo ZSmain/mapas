@@ -46,12 +46,13 @@ export async function requestDevice(adapter: GPUAdapter): Promise<GPUDevice> {
     });
 
     // Set up error handling for the device
+    // Only log unexpected device loss (not intentional destroy() calls)
     device.lost.then((info) => {
-        console.error(`WebGPU device was lost: ${info.message}`);
         if (info.reason !== 'destroyed') {
-            // Could implement auto-reconnection here
+            console.error(`WebGPU device was lost: ${info.message}`);
             console.warn('Device lost unexpectedly. Consider reinitializing.');
         }
+        // 'destroyed' reason is expected when component unmounts - no log needed
     });
 
     return device;
